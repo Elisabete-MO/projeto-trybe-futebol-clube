@@ -1,8 +1,8 @@
-import { Model, INTEGER, BOOLEAN, Sequelize } from 'sequelize';
+import { InferAttributes, InferCreationAttributes, Model, INTEGER, BOOLEAN } from 'sequelize';
 import Team from './team.model';
 import db from '.';
 
-class Match extends Model {
+export default class Match extends Model<InferAttributes<Match>, InferCreationAttributes<Match>> {
   public id!: number;
   public homeTeamId!: number;
   public homeTeamGoals!: number;
@@ -73,5 +73,3 @@ Match.belongsTo(Team, {
   as: 'awayTeam',
   foreignKey: 'awayTeamId',
 });
-
-export default Match;

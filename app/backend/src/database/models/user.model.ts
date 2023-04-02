@@ -1,7 +1,7 @@
-import { Model, INTEGER, STRING } from 'sequelize';
+import { InferAttributes, InferCreationAttributes, Model, INTEGER, STRING } from 'sequelize';
 import db from '.';
 
-class User extends Model {
+export default class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare id: number;
   declare username: string;
   declare role: string;
@@ -39,5 +39,3 @@ User.init({
   underscored: true,
   timestamps: false,
 });
-
-export default User;
