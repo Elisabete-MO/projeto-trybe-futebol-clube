@@ -11,13 +11,13 @@ export default class TeamSequelizeRepository implements ITeamRepository {
     if (!teams.length) throw new NotFoundError('No teams found');
     return teams;
   }
-}
 
-// async getById(id: number): Promise<ITeamWithId> {
-//   const team = await this._teamModel.findByPk(id);
-//   if (!team) throw new NotFoundError('Team not found');
-//   return team;
-// }
+  async getById(id: number): Promise<ITeamWithId> {
+    const team = await this._teamModel.findByPk(id);
+    if (!team) throw new NotFoundError('Team not found');
+    return team;
+  }
+}
 
 // async create(team: ITeam): Promise<ITeamWithId> {
 //   const isTeam = await this._teamModel.findOne({ where: { email: team.email } });

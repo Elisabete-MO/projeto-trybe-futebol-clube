@@ -14,12 +14,13 @@ export default class teamService implements ITeamService {
     const teams = await this._teamRepository.getAll();
     return teams;
   }
+
+  async getById(requestedId: number): Promise<ITeamWithId> {
+    const team = await this._teamRepository.getById(requestedId);
+    const { teamName, id } = team;
+    return { id, teamName };
+  }
 }
-// async getById(requestedId: number): Promise<Omit<ITeamWithId, 'password'>> {
-//   const team = await this._teamRepository.getById(requestedId)
-//   const { teamname, email, id } = team;
-//   return { id, teamname, email }
-// }
 
 // async create(team: ITeam): Promise<Omit<ITeamWithId, 'password'>> {
 //   this._teamValidations.validateTeam(team);

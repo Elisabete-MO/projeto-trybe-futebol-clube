@@ -12,7 +12,7 @@ const teamService = new TeamService(teamRepository);
 const teamController = new TeamController(teamService);
 
 router
-  .get('/teams', teamController.getAll.bind(teamController));
-// .get('/Teams/:id', verifyRequiredFields('teams'), TeamController.getById.bind(TeamController))
+  .get('/teams', teamController.getAll.bind(teamController))
+  .get('/teams/:id', teamController.getById.bind(teamController));
 
 export default router;
