@@ -1,6 +1,8 @@
 import express from 'express';
 import errorMiddleware from './middlewares/error.middleware';
 import teamRouter from './routes/team.router';
+import loginRouter from './routes/login.router';
+import userRouter from './routes/user.router';
 
 class App {
   public app: express.Express;
@@ -28,6 +30,8 @@ class App {
   }
 
   private routes(): void {
+    this.app.use(loginRouter);
+    this.app.use(userRouter);
     this.app.use(teamRouter);
     this.app.use(errorMiddleware);
   }

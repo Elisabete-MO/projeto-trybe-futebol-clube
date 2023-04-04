@@ -21,10 +21,3 @@ export default class teamService implements ITeamService {
     return { id, teamName };
   }
 }
-
-// async create(team: ITeam): Promise<Omit<ITeamWithId, 'password'>> {
-//   this._teamValidations.validateTeam(team);
-//   const teamWithId = await this._teamRepository.create(team);
-//   const { teamname, email, id } = teamWithId;
-//   return { id, teamname, email };
-// }

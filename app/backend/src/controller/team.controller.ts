@@ -32,12 +32,3 @@ export default class TeamController implements ITeamController {
     }
   }
 }
-
-// async create(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
-//   try {
-//     const newTeam = await this._teamService.create(req.body);
-//     return res.status(201).json(newTeam);
-//   } catch (error) {
-//     next(error);
-//   }
-// }
