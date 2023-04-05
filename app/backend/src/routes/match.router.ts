@@ -10,7 +10,7 @@ const matchService = new MatchService(matchRepository);
 const matchController = new MatchController(matchService);
 
 router
-  .get('/matches', matchController.getAll.bind(matchController))
-  .get('/matches/:id', matchController.getById.bind(matchController));
+  .get('/matches', matchController.getAll.bind(matchController));
+// .get('/matches/:id', matchController.getById.bind(matchController));
 
 export default router;

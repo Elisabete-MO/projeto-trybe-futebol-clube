@@ -51,7 +51,7 @@ describe('GET  /team', () => {
     it(`should throw an InvalidParamsError if it's different from a number`, async () => {
       const httpResponse = await chai.request(app).get('/teams/a');
       expect(httpResponse.status).to.be.equal(400)
-      expect(httpResponse.body).to.be.deep.equal({ error: 'Params should be a number' })
+      expect(httpResponse.body).to.be.deep.equal({ message: 'Params should be a number' })
     });
 
     it('should throw a NotFoundError if no teams are found', async () => {
@@ -60,7 +60,7 @@ describe('GET  /team', () => {
 
       const httpResponse = await chai.request(app).get('/teams/99');
       expect(httpResponse.status).to.be.equal(404)
-      expect(httpResponse.body).to.be.deep.equal({ error: 'Team not found' })
+      expect(httpResponse.body).to.be.deep.equal({ message: 'Team not found' })
 
       const teamRepository = new TeamSequelizeRepository(TeamModel);
 

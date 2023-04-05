@@ -15,8 +15,8 @@ export default class matchService implements IMatchService {
     return matchs;
   }
 
-  async getById(requestedId: number): Promise<IMatch> {
-    const match = await this._matchRepository.getById(requestedId);
-    return match;
-  }
+  // async getById(requestedId: number): Promise<IMatch> {
+  //   const match = await this._matchRepository.getById(requestedId);
+  //   return match;
+  // }
 }
