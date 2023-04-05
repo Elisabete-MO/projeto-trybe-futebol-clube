@@ -14,10 +14,19 @@ export default class LoginController implements ILoginController {
   async login(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
       const { email, password } = req.body;
-      const token = await this._loginService.getByLogin(email, password);
-      res.status(200).json({ token: token.password });
+      const token = await this._loginService.postLogin(email, password);
+      res.status(200).json({ token });
     } catch (error) {
       next(error);
     }
   }
+
+  getRole = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+    try {
+      const role = req.user ?? { role: 'default' };
+      res.status(200).json(role);
+    } catch (error) {
+      next(error);
+    }
+  };
 }

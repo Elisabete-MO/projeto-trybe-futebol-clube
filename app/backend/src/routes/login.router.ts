@@ -5,7 +5,7 @@ import LoginSequelizeRepository from '../repositories/UserSequelize.repository '
 import verifyRequiredFields from '../middlewares/verifyRequiredFields';
 import UserValidations from '../service/validations/user.validations';
 import LoginValidations from '../service/validations/login.validations';
-// import MissingParamError from '../middlewares/errors/missingParam.error';
+import validateAuth from '../auth/validateAuth';
 
 const router = Router();
 
@@ -16,6 +16,7 @@ const loginService = new LoginService(userValidations, loginValidations, loginRe
 const loginController = new LoginController(loginService);
 
 router
-  .post('/login', verifyRequiredFields('login'), loginController.login.bind(loginController));
+  .post('/login', verifyRequiredFields('login'), loginController.login.bind(loginController))
+  .get('/login/role', validateAuth(), loginController.getRole.bind(loginController));
 
 export default router;

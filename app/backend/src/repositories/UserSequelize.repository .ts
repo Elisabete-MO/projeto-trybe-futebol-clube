@@ -1,6 +1,7 @@
+import { IUserLogin } from '../service/interfaces/ILoginService';
 import UserModel from '../database/models/user.model';
 import NotFoundError from '../middlewares/errors/notFound.error';
-import { IUser, IUserWithId } from '../service/interfaces/IUserService';
+import { IUserWithId } from '../service/interfaces/IUserService';
 import IUserRepository from './interfaces/IUserRepository';
 
 export default class UserSequelizeRepository implements IUserRepository {
@@ -23,12 +24,20 @@ export default class UserSequelizeRepository implements IUserRepository {
     return user as IUserWithId;
   }
 
-  async getByLogin(email: string): Promise<IUser> {
+  async postLogin(email: string): Promise<IUserLogin> {
     const user = await this._userModel.findOne({
       where: { email },
-      attributes: ['email', 'password'], // campos a serem retornados
+      attributes: ['id', 'email', 'password', 'role'], // campos a serem retornados
     });
-    return user as IUser;
+    return user as IUserLogin;
+  }
+
+  async getLogin(id: number, email:string, password: string, role: string): Promise<IUserLogin> {
+    const user = await this._userModel.findOne({
+      where: { id, email, password, role },
+      attributes: ['role'],
+    });
+    return user as IUserLogin;
   }
 
   // async create(user: IUser): Promise<IUserWithId> {
