@@ -18,9 +18,3 @@ export default class TeamSequelizeRepository implements ITeamRepository {
     return team;
   }
 }
-
-// async create(team: ITeam): Promise<ITeamWithId> {
-//   const isTeam = await this._teamModel.findOne({ where: { email: team.email } });
-//   if (isTeam) throw new ConflictError('This teamname already exists');
-//   return this._teamModel.create(team);
-// }

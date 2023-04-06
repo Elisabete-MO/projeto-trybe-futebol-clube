@@ -5,6 +5,9 @@ export interface IMatch {
   awayTeamId: number;
   awayTeamGoals: number;
   inProgress: boolean;
+}
+
+export interface IMatches extends IMatch{
   homeTeam: {
     teamName?: string;
   };
@@ -13,7 +16,15 @@ export interface IMatch {
   };
 }
 
+export interface IUpdateScoreRequest {
+  homeTeamGoals: number;
+  awayTeamGoals: number;
+}
+
 export default interface IMatchService {
-  getAll(): Promise<IMatch[]>
-  // getById(id: number): Promise<IMatch>
+  getAll(): Promise<IMatches[]>
+  getById(id: number): Promise<IMatch>
+  finishMatch(id: number): Promise<IMatch>
+  updateMatch(id: number, body: IUpdateScoreRequest): Promise<IMatch>
+  createMatch(body: IMatch): Promise<IMatch>
 }

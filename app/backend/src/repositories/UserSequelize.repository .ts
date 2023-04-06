@@ -39,10 +39,4 @@ export default class UserSequelizeRepository implements IUserRepository {
     });
     return user as IUserLogin;
   }
-
-  // async create(user: IUser): Promise<IUserWithId> {
-  //   const isUser = this.getByEmail(user.email);
-  //   if (isUser) throw new ConflictError('This username already exists');
-  //   return this._userModel.create(user);
-  // }
 }

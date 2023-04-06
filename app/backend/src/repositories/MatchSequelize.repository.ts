@@ -1,13 +1,13 @@
 import NotFoundError from '../middlewares/errors/notFound.error';
 import MatchModel from '../database/models/match.model';
 import TeamModel from '../database/models/team.model';
-import { IMatch } from '../service/interfaces/IMatchService';
+import { IMatch, IMatches, IUpdateScoreRequest } from '../service/interfaces/IMatchService';
 import IMatchRepository from './interfaces/IMatchRepository';
 
 export default class MatchSequelizeRepository implements IMatchRepository {
   constructor(private _matchModel = MatchModel, private _teamModel = TeamModel) {}
 
-  static formatData(matches: MatchModel[]): IMatch[] {
+  static formatData(matches: MatchModel[]): IMatches[] {
     return matches.map((match) => ({
       id: match.id,
       homeTeamId: match.homeTeamId,
@@ -20,7 +20,7 @@ export default class MatchSequelizeRepository implements IMatchRepository {
     }));
   }
 
-  async getAll(): Promise<IMatch[]> {
+  async getAll(): Promise<IMatches[]> {
     const matches = await this._matchModel.findAll({
       include: [
         { model: this._teamModel, as: 'homeTeam', attributes: ['teamName'] },
@@ -32,19 +32,37 @@ export default class MatchSequelizeRepository implements IMatchRepository {
     });
     if (!matches.length) throw new NotFoundError('No matchs found');
     const formattedMatches = MatchSequelizeRepository.formatData(matches);
-    return formattedMatches as IMatch[];
+    return formattedMatches as IMatches[];
   }
 
-  // async getById(id: number): Promise<IMatch> {
-  //   const match = await this._matchModel.findByPk(id);
-  //   if (!match) throw new NotFoundError('Match not found');
-  //   return match;
-  // }
-}
+  async getById(id: number): Promise<IMatch> {
+    const match = await this._matchModel.findByPk(id);
+    if (!match) throw new NotFoundError('Match not found');
+    return match;
+  }
 
+  async finishMatch(id: number): Promise<IMatch> {
+    const match = await this.getById(id);
+    await this._matchModel.update({ inProgress: false }, { where: { id } });
+    return match;
+  }
+
+  async updateMatch(id: number, body: IUpdateScoreRequest): Promise<IMatch> {
+    const match = await this.getById(id);
+    const { homeTeamGoals, awayTeamGoals } = body;
+    if (!homeTeamGoals && !awayTeamGoals) return match;
+    if (homeTeamGoals) match.homeTeamGoals = homeTeamGoals;
+    if (awayTeamGoals) match.awayTeamGoals = awayTeamGoals;
+    await this._matchModel.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
+    return match;
+  }
+
+  async createMatch(data: IMatch): Promise<IMatch> {
+    // id "inProgress": true,
+    // const isMatch = await this._matchModel.findOne({ where: { email: match.email } });
+    // if (isMatch) throw new ConflictError('This matchname already exists');
+    const result = this._matchModel.create(data);
+    return result;
+  }
+}
 // const matchs = await this._matchModel.findAll();
-// async create(match: IMatch): Promise<IMatchWithId> {
-//   const isMatch = await this._matchModel.findOne({ where: { email: match.email } });
-//   if (isMatch) throw new ConflictError('This matchname already exists');
-//   return this._matchModel.create(match);
-// }

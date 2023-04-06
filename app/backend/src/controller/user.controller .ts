@@ -41,12 +41,3 @@ export default class UserController implements IUserController {
     }
   }
 }
-
-// async create(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
-//   try {
-//     const newUser = await this._userService.create(req.body);
-//     return res.status(201).json(newUser);
-//   } catch (error) {
-//     next(error);
-//   }
-// }

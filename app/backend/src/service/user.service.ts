@@ -32,10 +32,3 @@ export default class userService implements IUserService {
     return { id, username, email };
   }
 }
-
-// async create(user: IUser): Promise<Omit<IUserWithId, 'password'>> {
-//   this._userValidations.validateUser(user);
-//   const userWithId = await this._userRepository.create(user);
-//   const { username, email, id } = userWithId;
-//   return { id, username, email };
-// }
