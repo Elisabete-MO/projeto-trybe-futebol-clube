@@ -1,6 +1,6 @@
 import { IMatch } from './IMatchService';
+import { ITeamWithId } from './ITeamService';
 
 export default interface IMatchValidations {
-  // validateMatchName(matchName: string): void;
-  validateMatch(match: IMatch): void;
+  validateMatch(match: IMatch, homeTeamExists: ITeamWithId, awayTeamExist: ITeamWithId): void;
 }

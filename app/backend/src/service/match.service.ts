@@ -1,17 +1,21 @@
 import IMatchService, { IMatch, IMatches, IUpdateScoreRequest } from './interfaces/IMatchService';
-import IMatchRepository from '../repositories/MatchSequelize.repository';
+import MatchRepository from '../repositories/MatchSequelize.repository';
+import TeamRepository from '../repositories/TeamSequelize.repository';
 import IMatchValidations from './interfaces/IMatchValidations';
 
 export default class matchService implements IMatchService {
   private _matchValidations : IMatchValidations;
-  private _matchRepository: IMatchRepository;
+  private _matchRepository: MatchRepository;
+  private _teamRepository: TeamRepository;
 
   constructor(
     matchValidation: IMatchValidations,
-    matchRepository: IMatchRepository,
+    matchRepository: MatchRepository,
+    teamRepository: TeamRepository,
   ) {
     this._matchValidations = matchValidation;
     this._matchRepository = matchRepository;
+    this._teamRepository = teamRepository;
   }
 
   async getAll(): Promise<IMatches[]> {
@@ -35,7 +39,9 @@ export default class matchService implements IMatchService {
   }
 
   async createMatch(body: IMatch): Promise<IMatch> {
-    this._matchValidations.validateMatch(body);
+    const homeTeamExist = await this._teamRepository.getById(body.homeTeamId);
+    const awayTeamExist = await this._teamRepository.getById(body.awayTeamId);
+    this._matchValidations.validateMatch(body, homeTeamExist, awayTeamExist);
     const result = await this._matchRepository.createMatch(body);
     const match = await this._matchRepository.getById(result.id);
     return match;

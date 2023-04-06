@@ -5,12 +5,14 @@ import MatchSequelizeRepository from '../repositories/MatchSequelize.repository'
 import validateAuth from '../auth/validateAuth';
 import verifyRequiredFields from '../middlewares/verifyRequiredFields';
 import MatchValidations from '../service/validations/match.validations';
+import TeamSequelizeRepository from '../repositories/TeamSequelize.repository';
 
 const router = Router();
 
 const matchValidation = new MatchValidations();
+const teamRepository = new TeamSequelizeRepository();
 const matchRepository = new MatchSequelizeRepository();
-const matchService = new MatchService(matchValidation, matchRepository);
+const matchService = new MatchService(matchValidation, matchRepository, teamRepository);
 const matchController = new MatchController(matchService);
 
 const ROUTE_ID = '/matches/:id';
@@ -21,7 +23,7 @@ router
   .patch('/matches/:id/finish', validateAuth(), matchController.finishMatch.bind(matchController))
   .patch(ROUTE_ID, validateAuth(), matchController.updateMatch.bind(matchController))
   .post(
-    ROUTE_ID,
+    '/matches',
     validateAuth(),
     verifyRequiredFields('matches'),
     matchController.createMatch.bind(matchController),

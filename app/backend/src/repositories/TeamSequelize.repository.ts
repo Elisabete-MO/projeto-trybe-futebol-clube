@@ -14,7 +14,7 @@ export default class TeamSequelizeRepository implements ITeamRepository {
 
   async getById(id: number): Promise<ITeamWithId> {
     const team = await this._teamModel.findByPk(id);
-    if (!team) throw new NotFoundError('Team not found');
+    if (!team) throw new NotFoundError('There is no team with such id!');
     return team;
   }
 }
