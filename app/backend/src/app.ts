@@ -4,6 +4,7 @@ import teamRouter from './routes/team.router';
 import loginRouter from './routes/login.router';
 import userRouter from './routes/user.router';
 import matchRouter from './routes/match.router';
+import leaderBoardRouter from './routes/board.router';
 
 class App {
   public app: express.Express;
@@ -35,6 +36,7 @@ class App {
     this.app.use(userRouter);
     this.app.use(teamRouter);
     this.app.use(matchRouter);
+    this.app.use(leaderBoardRouter);
     this.app.use(errorMiddleware);
   }
 

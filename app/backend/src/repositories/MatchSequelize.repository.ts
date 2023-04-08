@@ -58,11 +58,7 @@ export default class MatchSequelizeRepository implements IMatchRepository {
   }
 
   async createMatch(data: IMatch): Promise<IMatch> {
-    // id "inProgress": true,
-    // const isMatch = await this._matchModel.findOne({ where: { email: match.email } });
-    // if (isMatch) throw new ConflictError('This matchname already exists');
     const result = this._matchModel.create(data);
     return result;
   }
 }
-// const matchs = await this._matchModel.findAll();
