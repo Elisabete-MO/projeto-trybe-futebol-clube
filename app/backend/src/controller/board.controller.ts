@@ -11,15 +11,10 @@ export default class BoardController implements IBoardController {
     this._boardService = boardService;
   }
 
-  async getAll(_req: Request, res: Response, next: NextFunction): Promise<Response | void> {
-    // const { inProgress } = req.query;
+  async getAll(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+    const type = req.path;
     try {
-      const boards = await this._boardService.getAllTeamMatches();
-      // if (inProgress === 'true') {
-      //   boards = boards.filter((board) => board.inProgress);
-      // } else if (inProgress === 'false') {
-      //   boards = boards.filter((board) => !board.inProgress);
-      // }
+      const boards = await this._boardService.getAllTeamMatches(type);
       return res.status(200).json(boards);
     } catch (error) {
       next(error);

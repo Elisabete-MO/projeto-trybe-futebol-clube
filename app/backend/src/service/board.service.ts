@@ -1,20 +1,24 @@
 import IBoardService, { IMatchData, ITeam } from './interfaces/IBoardService';
 import BoardRepository from '../repositories/BoardSequelize.repository';
+import BoardAux from './aux/board.aux';
 
 export default class BoardService implements IBoardService {
   private _boardRepository: BoardRepository;
+  private _boardAux: BoardAux;
 
   constructor(
     boardRepository: BoardRepository,
+    boardAux: BoardAux,
   ) {
     this._boardRepository = boardRepository;
+    this._boardAux = boardAux;
   }
 
   private static createTeam(teamName: string): ITeam {
     return {
       name: teamName,
-      totalGames: 0,
       totalPoints: 0,
+      totalGames: 0,
       totalVictories: 0,
       totalDraws: 0,
       totalLosses: 0,
@@ -99,9 +103,20 @@ export default class BoardService implements IBoardService {
     return Object.values(teams).sort((a, b) => b.totalPoints - a.totalPoints);
   }
 
-  async getAllTeamMatches(): Promise<ITeam[]> {
+  async getAllTeamMatches(type: string): Promise<ITeam[]> {
+    let result: ITeam[];
     const matches = await this._boardRepository.getAllTeamMatches();
-    const result = BoardService.calculateRanking(matches);
+    switch (type) {
+      case '/leaderboard/home':
+        result = this._boardAux.calculateRanking(matches, 'home');
+        break;
+      case '/leaderboard/away':
+        result = this._boardAux.calculateRanking(matches, 'away');
+        break;
+      default:
+        result = BoardService.calculateRanking(matches);
+        break;
+    }
     return result;
   }
 }

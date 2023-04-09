@@ -23,5 +23,5 @@ export interface IMatchData {
 }
 
 export default interface IBoardService {
-  getAllTeamMatches(): Promise<ITeam[]>
+  getAllTeamMatches(type: string): Promise<ITeam[]>
 }

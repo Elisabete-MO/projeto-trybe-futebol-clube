@@ -60,7 +60,7 @@ describe('GET  /team', () => {
 
       const httpResponse = await chai.request(app).get('/teams/99');
       expect(httpResponse.status).to.be.equal(404)
-      expect(httpResponse.body).to.be.deep.equal({ message: 'Team not found' })
+      expect(httpResponse.body).to.be.deep.equal({ message: 'There is no team with such id!' })
 
       const teamRepository = new TeamSequelizeRepository(TeamModel);
 
