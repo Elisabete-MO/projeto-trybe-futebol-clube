@@ -82,44 +82,36 @@ describe('GET  /user', () => {
       expect(result).to.deep.equal(user);
       sinon.assert.called(userModelMock);
     });
-  });
 
-  describe('getByEmail', () => {
-    it('should throw a NotFoundError if no users are found', async () => {
-      userModelMock = sinon.stub(UserModel, 'findOne');
-      userModelMock.resolves(null);
-
+    it('should throw a InvalidParamsError if the email is not provided', async () => {
       const httpResponse = await chai.request(app)
-      .post('/users')
+      .post('/login')
       .send({
-        email: 'email_inválido',
+        email: 'emailemail.com',
       })
-      expect(httpResponse.status).to.be.equal(404)
-      expect(httpResponse).to.be.deep.equal({ message: 'User not found' })
-
-      const userRepository = new UserSequelizeRepository(UserModel);
-
-      await expect(userRepository.getById(99)).to.be.rejectedWith(NotFoundError);
-      sinon.assert.called(userModelMock);
+      expect(httpResponse.status).to.be.equal(400)
+      expect(httpResponse.body).to.be.deep.equal({ message: 'All fields must be filled' })
     });
 
-    it('should return a user and 200 status', async () => {
-      userModelMock = sinon.stub(UserModel, 'findOne');
-      const user: IUserWithId = { id: 1, username: 'User A', email: 'email@email.com' };
-      userModelMock.resolves(user);
-
+    it('should throw a InvalidParamsError if the password is not provided', async () => {
       const httpResponse = await chai.request(app)
-      .post('/users')
+      .post('/login')
       .send({
         email: 'email@email.com',
-      });
-      expect(httpResponse.status).to.be.equal(200)
-      expect(httpResponse.body).to.be.deep.equal(user)
+      })
+      expect(httpResponse.status).to.be.equal(400)
+      expect(httpResponse.body).to.be.deep.equal({ message: 'All fields must be filled' })
+    });
 
-      const userRepository = new UserSequelizeRepository(UserModel);
-      const result = await userRepository.getById(1);
-      expect(result).to.deep.equal(user);
-      sinon.assert.called(userModelMock);
+    it('should throw a UnauthorizedError if the email is not in the format email@email.com', async () => {
+      const httpResponse = await chai.request(app)
+      .post('/login')
+      .send({
+        email: 'emailemail.com',
+        password: '1234567'
+      });
+      expect(httpResponse.status).to.be.equal(401)
+      expect(httpResponse.body).to.be.deep.equal({ message: 'Invalid email or password' })
     });
   });
 });
