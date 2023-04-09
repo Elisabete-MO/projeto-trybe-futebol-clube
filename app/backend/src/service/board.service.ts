@@ -34,7 +34,7 @@ export default class BoardService implements IBoardService {
     teamData.totalGames += 1;
     teamData.goalsFavor += goalsFavor;
     teamData.goalsOwn += goalsOwn;
-    teamData.goalsBalance = team.goalsFavor - team.goalsOwn;
+    teamData.goalsBalance = teamData.goalsFavor - teamData.goalsOwn;
     teamData
       .efficiency = `${((teamData.totalPoints / (teamData.totalGames * 3)) * 100).toFixed(2)}%`;
     return teamData;
