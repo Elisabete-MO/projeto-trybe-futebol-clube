@@ -2,7 +2,7 @@ import { Router } from 'express';
 import LoginController from '../controller/login.controller';
 import LoginService from '../service/login.service';
 import LoginSequelizeRepository from '../repositories/UserSequelize.repository ';
-import verifyRequiredFields from '../middlewares/verifyRequiredFields';
+import { verifyRequiredFields } from '../middlewares/verifyRequiredFields';
 import UserValidations from '../service/validations/user.validations';
 import LoginValidations from '../service/validations/login.validations';
 import validateAuth from '../auth/validateAuth';

@@ -3,7 +3,7 @@ import MatchController from '../controller/match.controller';
 import MatchService from '../service/match.service';
 import MatchSequelizeRepository from '../repositories/MatchSequelize.repository';
 import validateAuth from '../auth/validateAuth';
-import verifyRequiredFields from '../middlewares/verifyRequiredFields';
+import { verifyRequiredFields, verifyGoals } from '../middlewares/verifyRequiredFields';
 import MatchValidations from '../service/validations/match.validations';
 import TeamSequelizeRepository from '../repositories/TeamSequelize.repository';
 
@@ -26,6 +26,7 @@ router
     '/matches',
     validateAuth(),
     verifyRequiredFields('matches'),
+    verifyGoals('goals'),
     matchController.createMatch.bind(matchController),
   );
 export default router;
