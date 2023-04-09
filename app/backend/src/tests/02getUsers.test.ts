@@ -82,15 +82,17 @@ describe('GET  /user', () => {
       expect(result).to.deep.equal(user);
       sinon.assert.called(userModelMock);
     });
+  })
 
+  describe('login', () => {
     it('should throw a InvalidParamsError if the email is not provided', async () => {
       const httpResponse = await chai.request(app)
       .post('/login')
       .send({
-        email: 'emailemail.com',
+        email: '',
       })
-      expect(httpResponse.status).to.be.equal(400)
-      expect(httpResponse.body).to.be.deep.equal({ message: 'All fields must be filled' })
+      expect(httpResponse.status).to.be.equal(401)
+      expect(httpResponse.body).to.be.deep.equal({ message: 'Invalid email or password' })
     });
 
     it('should throw a InvalidParamsError if the password is not provided', async () => {
@@ -98,9 +100,10 @@ describe('GET  /user', () => {
       .post('/login')
       .send({
         email: 'email@email.com',
+        password: ''
       })
-      expect(httpResponse.status).to.be.equal(400)
-      expect(httpResponse.body).to.be.deep.equal({ message: 'All fields must be filled' })
+      expect(httpResponse.status).to.be.equal(401)
+      expect(httpResponse.body).to.be.deep.equal({ message: 'Invalid email or password' })
     });
 
     it('should throw a UnauthorizedError if the email is not in the format email@email.com', async () => {
@@ -113,5 +116,16 @@ describe('GET  /user', () => {
       expect(httpResponse.status).to.be.equal(401)
       expect(httpResponse.body).to.be.deep.equal({ message: 'Invalid email or password' })
     });
-  });
+
+    it('should throw a UnauthorizedError if the password have 6 or less characters', async () => {
+      const httpResponse = await chai.request(app)
+      .post('/login')
+      .send({
+        email: 'email@email.com',
+        password: '12345'
+      });
+      expect(httpResponse.status).to.be.equal(401)
+      expect(httpResponse.body).to.be.deep.equal({ message: 'Invalid email or password' })
+    });
+  })
 });

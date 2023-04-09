@@ -29,6 +29,20 @@ export default class BoardService implements IBoardService {
     };
   }
 
+  private static sortData = (teams: Record<string, ITeam>) =>
+    Object.values(teams).sort((a, b) => {
+      if (b.totalPoints !== a.totalPoints) {
+        return b.totalPoints - a.totalPoints;
+      }
+      if (b.totalVictories !== a.totalVictories) {
+        return b.totalVictories - a.totalVictories;
+      }
+      if (b.goalsBalance !== a.goalsBalance) {
+        return b.goalsBalance - a.goalsBalance;
+      }
+      return b.goalsFavor - a.goalsFavor;
+    });
+
   private static updateTeamStats(team: ITeam, goalsFavor: number, goalsOwn: number) {
     const teamData = { ...team };
     teamData.totalGames += 1;
@@ -100,7 +114,7 @@ export default class BoardService implements IBoardService {
         teams[awayTeam.name] = awayTeam;
       }
     });
-    return Object.values(teams).sort((a, b) => b.totalPoints - a.totalPoints);
+    return BoardService.sortData(teams);
   }
 
   async getAllTeamMatches(type: string): Promise<ITeam[]> {
