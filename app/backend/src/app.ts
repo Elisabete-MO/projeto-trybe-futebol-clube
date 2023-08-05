@@ -1,4 +1,5 @@
 import express from 'express';
+import http from 'http';
 import errorMiddleware from './middlewares/error.middleware';
 import teamRouter from './routes/team.router';
 import loginRouter from './routes/login.router';
@@ -8,9 +9,11 @@ import leaderBoardRouter from './routes/board.router';
 
 class App {
   public app: express.Express;
+  private server: http.Server;
 
   constructor() {
     this.app = express();
+    this.server = http.createServer(this.app);
 
     this.config();
     this.routes();
@@ -41,7 +44,7 @@ class App {
   }
 
   public start(PORT: string | number):void {
-    this.app.listen(PORT, () => console.log(`Running on port ${PORT}`));
+    this.server = this.app.listen(PORT, () => console.log(`Running on port ${PORT}`));
   }
 }
 

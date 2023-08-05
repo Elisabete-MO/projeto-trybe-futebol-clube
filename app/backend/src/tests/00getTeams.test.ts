@@ -44,6 +44,9 @@ describe('GET  /team', () => {
       const result = await teamRepository.getAll();
       expect(result).to.deep.equal(teams);
       expect(teamModelMock.calledOnce).to.be.true;
+      const httpResponse = await chai.request(app).get('/teams');
+      expect(httpResponse.status).to.be.equal(200);
+      expect(httpResponse.body).to.be.deep.equal(teams);
     });
   });
 

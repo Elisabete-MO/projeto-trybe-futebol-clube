@@ -44,6 +44,10 @@ describe('GET  /user', () => {
       const result = await userRepository.getAll();
       expect(result).to.deep.equal(users);
       expect(userModelMock.calledOnce).to.be.true;
+      const httpResponse = await chai.request(app).get('/users');
+      expect(httpResponse.status).to.be.equal(200);
+      expect(httpResponse.body).to.be.deep.equal(users);
+
     });
   });
 
